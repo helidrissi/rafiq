@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: rafiq
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/rafiq}
+    username: ${DB_USERNAME:rafiq}
+    password: ${DB_PASSWORD:rafiq}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+logging:
+  level:
+    root: INFO

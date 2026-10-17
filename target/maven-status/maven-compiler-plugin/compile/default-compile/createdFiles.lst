@@ -1,0 +1,15 @@
+ma/rafiq/application/LlmClient.class
+ma/rafiq/domain/Appointment.class
+ma/rafiq/domain/LlmResult.class
+ma/rafiq/adapters/in/TwilioWebhookController.class
+ma/rafiq/application/MessageSender.class
+ma/rafiq/domain/InvalidConversationTransitionException.class
+ma/rafiq/domain/Patient.class
+ma/rafiq/RafiqApplication.class
+ma/rafiq/domain/Slot.class
+ma/rafiq/domain/ConversationState.class
+ma/rafiq/application/HandleIncomingMessage.class
+ma/rafiq/configuration/WalkingSkeletonConfiguration.class
+ma/rafiq/domain/Conversation.class
+ma/rafiq/domain/Escalation.class
+ma/rafiq/domain/Intent.class

@@ -1,0 +1,15 @@
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/RafiqApplication.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/adapters/in/TwilioWebhookController.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/HandleIncomingMessage.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/LlmClient.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/MessageSender.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/configuration/WalkingSkeletonConfiguration.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/Appointment.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/Conversation.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/ConversationState.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/Escalation.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/Intent.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/InvalidConversationTransitionException.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/LlmResult.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/Patient.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/Slot.java
