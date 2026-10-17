@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SlotRepository {
     List<Slot> findAvailable(int limit);
+    boolean reserve(String slotId);
 }

@@ -1,0 +1,22 @@
+[
+  {"message":"bghit rdv ghda", "intent":"BOOK_APPOINTMENT"},
+  {"message":"je veux un rendez-vous demain", "intent":"BOOK_APPOINTMENT"},
+  {"message":"wach kayn chi créneau sbah", "intent":"BOOK_APPOINTMENT"},
+  {"message":"bghit n7جز موعد", "intent":"BOOK_APPOINTMENT"},
+  {"message":"rdv l3chiya ila mumkin", "intent":"BOOK_APPOINTMENT"},
+  {"message":"oui le premier", "intent":"CHOOSE_SLOT"},
+  {"message":"kanakhtar numéro 2", "intent":"CHOOSE_SLOT"},
+  {"message":"nkhod hadak", "intent":"CHOOSE_SLOT"},
+  {"message":"confirmez le créneau", "intent":"CONFIRM"},
+  {"message":"ah confirme", "intent":"CONFIRM"},
+  {"message":"la, merci", "intent":"DENY"},
+  {"message":"ma bghitch daba", "intent":"DENY"},
+  {"message":"j'ai de la fièvre", "intent":"MEDICAL_QUESTION"},
+  {"message":"3andi s5ana", "intent":"MEDICAL_QUESTION"},
+  {"message":"kayna douleur", "intent":"MEDICAL_QUESTION"},
+  {"message":"kansewel 3la l'adresse", "intent":"OTHER"},
+  {"message":"c'est où le cabinet", "intent":"OTHER"},
+  {"message":"bghit n3ref taman", "intent":"OTHER"},
+  {"message":"salam", "intent":"OTHER"},
+  {"message":"merci beaucoup", "intent":"OTHER"}
+]
