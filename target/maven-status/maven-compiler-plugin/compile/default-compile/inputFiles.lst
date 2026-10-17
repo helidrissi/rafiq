@@ -1,8 +1,12 @@
 /Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/RafiqApplication.java
 /Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/adapters/in/TwilioWebhookController.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/AppointmentRepository.java
 /Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/HandleIncomingMessage.java
 /Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/LlmClient.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/MedicalKeywordDetector.java
 /Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/MessageSender.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/ResponseTemplates.java
+/Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/application/SlotRepository.java
 /Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/configuration/WalkingSkeletonConfiguration.java
 /Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/Appointment.java
 /Users/hamza.elidrissidafali/workspace/rafiq/src/main/java/ma/rafiq/domain/Conversation.java
