@@ -14,6 +14,10 @@ public final class Conversation {
     public String id() { return id; }
     public ConversationState state() { return state; }
 
+    public void restoreState(ConversationState state) {
+        this.state = Objects.requireNonNull(state, "state must not be null");
+    }
+
     public void proposeSlots() { transitionTo(ConversationState.SLOTS_PROPOSED); }
     public void requestConfirmation() { transitionTo(ConversationState.AWAITING_CONFIRMATION); }
     public void book() { transitionTo(ConversationState.BOOKED); }
