@@ -1,0 +1,36 @@
+name: Bug
+description: Un comportement incorrect
+title: "bug: "
+labels: ["type:bug"]
+body:
+  - type: dropdown
+    id: gravite
+    attributes:
+      label: Gravité
+      description: P0 si un message médical peut être perdu, ou si des données patients fuient.
+      options: [P0, P1, P2, P3]
+    validations:
+      required: true
+  - type: textarea
+    id: observe
+    attributes:
+      label: Ce qui se passe
+      description: Données fictives uniquement. Jamais de vrai numéro ni de vrai message patient.
+    validations:
+      required: true
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Ce qui devrait se passer
+    validations:
+      required: true
+  - type: textarea
+    id: reproduire
+    attributes:
+      label: Pour reproduire
+      description: Étapes, message de test, état de la conversation.
+  - type: textarea
+    id: test
+    attributes:
+      label: Test qui prouvera la correction
+      description: Le test à écrire en premier, qui doit échouer avant le correctif.
