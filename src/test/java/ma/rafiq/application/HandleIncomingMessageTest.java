@@ -34,4 +34,23 @@ class HandleIncomingMessageTest {
                 (recipient, message) -> assertEquals("Je vais vous proposer trois créneaux disponibles.", message));
         handler.handle("masked-recipient", "je veux un rendez-vous");
     }
+
+    @Test void drivesConversationThroughBookingStates() {
+        var results = new java.util.ArrayDeque<>(List.of(
+                new LlmResult(Intent.BOOK_APPOINTMENT, 0.99, List.of(), "ignored"),
+                new LlmResult(Intent.CHOOSE_SLOT, 0.99, List.of("1"), "ignored"),
+                new LlmResult(Intent.CONFIRM, 0.99, List.of(), "ignored")));
+        var replies = new java.util.ArrayList<String>();
+        var handler = new HandleIncomingMessage(ignored -> results.remove(),
+                (recipient, message) -> replies.add(message));
+
+        handler.handle("patient-1", "rdv");
+        handler.handle("patient-1", "1");
+        handler.handle("patient-1", "oui");
+
+        assertEquals(List.of(
+                "Je vais vous proposer trois créneaux disponibles.",
+                "Merci. Souhaitez-vous confirmer ce créneau ?",
+                "Votre rendez-vous est confirmé."), replies);
+    }
 }
