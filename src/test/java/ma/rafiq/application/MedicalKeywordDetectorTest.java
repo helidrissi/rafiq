@@ -14,4 +14,8 @@ class MedicalKeywordDetectorTest {
         assertTrue(detector.matches("kayna skhana"));
     }
     @Test void ignoresNonMedicalMessage() { assertFalse(detector.matches("bghit rdv ghda")); }
+    @Test void matchesWholeWordsOnly() {
+        assertFalse(detector.matches("la douleurine n'est pas un symptôme"));
+        assertTrue(detector.matches("une douleur au dos"));
+    }
 }
