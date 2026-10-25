@@ -1,10 +1,12 @@
 # Comment on travaille sur Rafiq
 
+La chaîne complète, des specs au merge, est décrite dans [la Software Factory](docs/factory/README.md).
+
 ## Le cycle
 
-1. **Une issue d'abord.** Pas de code sans issue : contexte, périmètre, critère de « fini ».
+1. **Une spec, puis des issues.** Un besoin passe par une spec ([modèle](docs/specs/TEMPLATE.md)) avant de devenir des issues. Pas de code sans issue : contexte, périmètre, critère de « fini ».
 2. **Une branche par issue**, depuis `develop` : `feat/9-escalade-hors-heures`, `fix/…`, `chore/…`.
-3. **Une PR par sujet**, vers `develop`, avec `Closes #N` dans la description et la checklist ADR remplie.
+3. **Une PR par issue**, partie de `develop` et non d'une autre PR, vers `develop`, avec `Closes #N` dans la description et la checklist ADR remplie.
 4. **Review obligatoire** avant merge, contre les ADR. Personne ne merge sa propre PR sans relecture.
 5. `main` ne reçoit que des versions stables, depuis `develop`.
 
