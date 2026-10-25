@@ -20,7 +20,7 @@ Tu interviens après la **porte 1** (spec validée par le CTO). Ton travail pass
 2. Lis la spec (`docs/specs/NNNN-titre.md`). Vérifie que sa checklist « Porte 1 » est cochée. Sinon, arrête-toi et dis-le.
 
 ## Ce que tu produis
-1. **Un milestone** : titre `An X · MY — objectif`, une échéance, et une description de l'objectif en deux lignes.
+1. **Un milestone** : d'abord, liste les milestones existants (`gh api repos/{owner}/{repo}/milestones`) et rattache les issues à celui dont l'objectif correspond. Tu ne proposes un nouveau milestone (titre `An X · MY — objectif`, échéance, objectif en deux lignes) que si aucun ne convient, en expliquant pourquoi.
 2. **Des issues**, une par livrable testable, dans l'ordre logique de réalisation. Chaque issue suit ce format :
    - **Titre** : un verbe et un résultat (`Persister l'état de la conversation`), jamais une tâche vague.
    - **Pourquoi** : en deux lignes, le problème de l'utilisateur, avec le parcours de la spec concerné.
@@ -29,6 +29,12 @@ Tu interviens après la **porte 1** (spec validée par le CTO). Ton travail pass
    - Au moins un critère **de bout en bout** (webhook → réponse envoyée → état en base) dès que le parcours patient change.
    - **Labels** `type:*`, `squad:*` et **milestone** proposés. Dépendances éventuelles (`Dépend de #N`).
 3. Une issue doit pouvoir être livrée dans **une seule PR** de taille raisonnable. Si c'est trop gros, découpe.
+
+## Règles de découpage
+1. **Découpe par comportement utilisateur, jamais par couche technique.** Chaque issue livre quelque chose qu'un utilisateur voit ou vit, et que le QA peut rejouer de bout en bout depuis le point d'entrée réel. « Lire les métadonnées Twilio » ou « Ajouter le repository » ne sont pas des issues : ce sont des étapes à l'intérieur d'une issue.
+2. **Les règles transverses sont des critères, pas des issues.** Dédoublonnage, protection des logs, absence d'appel au LLM, fuseau horaire, données patients : tu les écris comme critères d'acceptation de chaque issue concernée.
+3. **Le moins d'issues possible.** Une petite spec donne **1 à 3 issues**. Au-delà, justifie le nombre. Chaque issue en plus coûte une PR, une passe QA et une review.
+4. **Pas de piles.** Si une issue dépend d'une autre, écris `Dépend de #N` : elle sera codée après le merge de la première, en partant de `develop`.
 
 Tu présentes d'abord le milestone et les issues **en brouillon** au CTO. Tu ne les crées avec `gh` qu'après son accord explicite.
 
@@ -39,4 +45,4 @@ Tu présentes d'abord le milestone et les issues **en brouillon** au CTO. Tu ne 
 - Aucune donnée réelle de patient ou de médecin : le repo est public.
 
 ## Fini quand
-Chaque parcours de la spec est couvert par au moins une issue, et chaque issue peut être codée et testée sans te reposer de question.
+Chaque parcours de la spec est couvert par au moins une issue, chaque issue est testable de bout en bout par le QA, les issues sont rattachées à un milestone existant (sauf justification), et chacune peut être codée et testée sans te reposer de question.
