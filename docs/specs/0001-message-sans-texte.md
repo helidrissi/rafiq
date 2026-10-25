@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Statut** | En relecture |
+| **Statut** | Validée (porte 1), par le CTO le 25/10/2026 |
 | **Auteurs** | CTO, co-CEO |
 | **Relecture terrain** | Pr Tazi, le 25/10/2026 |
 | **Milestone visé** | À proposer par le PM |
@@ -96,8 +96,8 @@ Fait terrain (Pr Tazi) : « Les mamans envoient des vocaux en darija, surtout la
 
 | Question | Qui tranche | Réponse |
 |---|---|---|
-| Le message bilingue est-il trop long pour WhatsApp ? | Pr Tazi | Non : deux phrases courtes, les patients lisent les deux langues |
-| Faut-il répondre une seule fois par nuit à un patient qui envoie dix vocaux ? | CTO | Hors scope V0 : une réponse par message, à revoir avec la boîte des escalades |
+| Le message bilingue est-il trop long pour WhatsApp ? | Pr Tazi, validé par le CTO | **Tranché** : non, deux phrases courtes, les patients lisent les deux langues |
+| Faut-il répondre une seule fois par nuit à un patient qui envoie dix vocaux ? | CTO | **Tranché** : hors scope de cette spec, une réponse par message, à revoir avec la boîte des escalades |
 
 ## Porte 1 · Checklist de validation
 
@@ -105,4 +105,4 @@ Fait terrain (Pr Tazi) : « Les mamans envoient des vocaux en darija, surtout la
 - [x] Le Pr Tazi a relu les parcours.
 - [x] Le hors scope est explicite.
 - [x] Chaque critère de succès est vérifiable.
-- [ ] Les questions ouvertes bloquantes sont tranchées. *(validation du CTO)*
+- [x] Les questions ouvertes bloquantes sont tranchées. *(validé par le CTO le 25/10/2026)*
