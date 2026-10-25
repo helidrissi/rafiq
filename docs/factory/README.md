@@ -18,9 +18,9 @@ Besoin ─► SPEC ─► PM ─► FULLSTACK ─► QA ─► YASSINE ─► ME
 | Poste | Qui | Reçoit | Produit | Interdits |
 |---|---|---|---|---|
 | **Spec** | CTO, co-CEO, Pr Tazi (terrain) | Un besoin | `docs/specs/NNNN-titre.md` selon [le modèle](../specs/TEMPLATE.md) | Parler de technique avant d'avoir écrit les parcours |
-| **PM senior** | agent `pm` | La spec validée | Un milestone et ses issues, critères *Étant donné / Quand / Alors*, en brouillon puis créés après accord | Prioriser, inventer un besoin, modifier le repo |
-| **Fullstack senior** | agent `backend` (Java 21, Spring Boot, Spring AI, Next.js) | Une issue | Une branche, une PR, du code simple et lisible, ses tests unitaires | Toucher aux tests du QA, déborder de l'issue, merger |
-| **QA senior** | agent `qa` | L'issue et la spec, jamais le code d'abord | Des scénarios joués comme un utilisateur, un rapport, une issue par bug | Modifier `src/main`, affaiblir un test |
+| **PM senior** | agent `pm` (Salma) | La spec validée | Un milestone et ses issues, critères *Étant donné / Quand / Alors*, en brouillon puis créés après accord | Prioriser, inventer un besoin, modifier le repo |
+| **Fullstack senior** | agent `fullstack` (Mehdi : Java 21, Spring Boot, Spring AI, Next.js) | Une issue | Une branche, une PR, du code simple et lisible, ses tests unitaires | Toucher aux tests du QA, déborder de l'issue, merger |
+| **QA senior** | agent `qa` (Leïla) | L'issue et la spec, jamais le code d'abord | Des scénarios joués comme un utilisateur, un rapport, une issue par bug | Modifier `src/main`, affaiblir un test |
 | **Reviewer** | agent `reviewer` (Yassine) | La PR | Un verdict contre les ADR, la sécurité et le branchement réel | Modifier le code, merger |
 
 Les contrats détaillés de chaque agent sont dans [`.claude/agents/`](../../.claude/agents/). Codex les charge via [`.codex/agents/`](../../.codex/agents/).
@@ -68,7 +68,7 @@ Relevées à chaque passage, dans la description de la PR ou le rapport de fin d
 1. Rédiger la spec à partir de [`docs/specs/TEMPLATE.md`](../specs/TEMPLATE.md), la relire avec le Pr Tazi, la valider (porte 1).
 2. Codex : « Lance l'agent pm sur `docs/specs/NNNN-titre.md` et montre-moi les brouillons d'issues. » Valider et prioriser (porte 2).
 3. Pour chaque issue, dans l'ordre des priorités :
-   - « Lance l'agent backend sur l'issue #N. »
+   - « Lance l'agent fullstack sur l'issue #N. »
    - « Lance l'agent qa sur l'issue #N et la PR associée. »
    - « Lance l'agent reviewer sur la PR. »
 4. Merger (porte 3), puis relever les métriques.
