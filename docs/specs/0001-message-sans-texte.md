@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| **Statut** | Validée (porte 1), par le CTO le 25/10/2026 |
+| **Statut** | En relecture · révision 2 (parcours D), après validation initiale du 25/10/2026 |
 | **Auteurs** | CTO, co-CEO |
 | **Relecture terrain** | Pr Tazi, le 25/10/2026 |
-| **Milestone visé** | À proposer par le PM |
+| **Milestone visé** | An 1 · M2 — Parcours fiable (issue #23) |
 | **ADR concernés** | ADR-006, ADR-007, ADR-008 |
 
 > Spec volontairement petite : c'est le premier passage de la Software Factory. Elle sert autant à livrer cette fonctionnalité qu'à mesurer la qualité de l'usine.
@@ -46,6 +46,15 @@ Fait terrain (Pr Tazi) : « Les mamans envoient des vocaux en darija, surtout la
 - **Déroulé** : Rafiq ignore le fichier et traite **le texte** exactement comme un message texte normal (mots-clés médicaux d'abord, puis le LLM).
 - **Résultat attendu** : le patient reçoit la réponse habituelle à une demande de rendez-vous.
 
+### Parcours D · Le patient réécrit après une escalade
+
+- **Persona** : la maman du parcours A. Elle a reçu le message « Message sans texte », qui l'invite à écrire sa demande.
+- **Déroulé** :
+  1. Elle écrit « bghit rdv ghda ».
+  2. Rafiq traite ce message comme une demande normale : il propose des créneaux, elle choisit, elle confirme.
+- **Résultat attendu** : le rendez-vous suit le parcours habituel, sans boucle. L'escalade précédente reste valable pour la secrétaire, qui verra le vocal le matin.
+- **Règle** : **une escalade est une alerte pour la secrétaire, jamais une impasse pour le patient.** C'est vrai après un message sans texte comme après une escalade médicale.
+
 ### Cas limites
 
 - **Média + texte médical** (« s5ana » en légende d'un vocal) : l'escalade médicale habituelle s'applique (ADR-008), pas le message « Message sans texte ».
@@ -61,7 +70,7 @@ Fait terrain (Pr Tazi) : « Les mamans envoient des vocaux en darija, surtout la
   > Ma kan9drouch nsem3o l-vocal wla nchoufo tswira. Ila kan chi haja mosta3jla, 3iyto l 141. Wla ktbo lina chno bghitou, w l-secrétaire ghadi tjawbkom.
 
 - **ADR-008** : s'il y a un texte, les mots-clés médicaux restent évalués en premier.
-- **ADR-006** : l'escalade passe par la machine à états (`Conversation.escalate()`).
+- **ADR-006** : l'escalade passe par la machine à états (`Conversation.escalate()`). Depuis l'état `ESCALATED`, une nouvelle demande de rendez-vous relance le parcours ; la machine à états doit l'autoriser explicitement (modification de l'ADR-006 à valider en review).
 - **Le LLM n'est pas appelé** pour un message sans texte : il n'y a rien à classifier.
 - Aucun contenu de message, aucune URL de fichier et aucun numéro complet dans les logs. Le fichier n'est ni téléchargé ni stocké.
 - Même réponse de jour comme de nuit.
@@ -86,6 +95,8 @@ Fait terrain (Pr Tazi) : « Les mamans envoient des vocaux en darija, surtout la
 - [ ] Parcours B (`MediaContentType0=image/jpeg`) : même résultat.
 - [ ] Parcours C (photo + « bghit rdv ghda ») : réponse habituelle de demande de rendez-vous.
 - [ ] Média + « s5ana » : template d'escalade médicale, pas le template « Message sans texte ».
+- [ ] Parcours D rejoué par le webhook, message après message : vocal sans texte → template « Message sans texte » ; puis « bghit rdv ghda » → réponse de proposition de créneaux, et non « Pouvez-vous préciser votre demande ? ».
+- [ ] Même chose après une escalade médicale (« s5ana » puis « bghit rdv ghda ») : la demande de rendez-vous est traitée.
 - [ ] Message vide et message d'espaces : même résultat que le parcours A.
 - [ ] Même `MessageSid` envoyé deux fois : une seule réponse.
 - [ ] Le LLM n'est jamais appelé pour un message sans texte (vérifié avec `FakeLlmClient`).
@@ -98,6 +109,7 @@ Fait terrain (Pr Tazi) : « Les mamans envoient des vocaux en darija, surtout la
 |---|---|---|
 | Le message bilingue est-il trop long pour WhatsApp ? | Pr Tazi, validé par le CTO | **Tranché** : non, deux phrases courtes, les patients lisent les deux langues |
 | Faut-il répondre une seule fois par nuit à un patient qui envoie dix vocaux ? | CTO | **Tranché** : hors scope de cette spec, une réponse par message, à revoir avec la boîte des escalades |
+| Après une escalade, une nouvelle demande normale relance-t-elle le parcours ? | CTO, avis du Pr Tazi | **Tranché** : oui, l'escalade n'est jamais une impasse pour le patient (révision 2) |
 
 ## Porte 1 · Checklist de validation
 
@@ -105,4 +117,13 @@ Fait terrain (Pr Tazi) : « Les mamans envoient des vocaux en darija, surtout la
 - [x] Le Pr Tazi a relu les parcours.
 - [x] Le hors scope est explicite.
 - [x] Chaque critère de succès est vérifiable.
-- [x] Les questions ouvertes bloquantes sont tranchées. *(validé par le CTO le 25/10/2026)*
+- [ ] Les questions ouvertes bloquantes sont tranchées. *(révision 2 : à revalider par le CTO)*
+
+## Historique
+
+| Révision | Date | Changement | Origine |
+|---|---|---|---|
+| 1 | 25/10/2026 | Version initiale, validée à la porte 1 | CTO, co-CEO, Pr Tazi |
+| 2 | 25/10/2026 | Ajout du parcours D et de deux critères : après une escalade, le patient peut toujours prendre rendez-vous | Défaut trouvé à la relecture de la PR #24 : la conversation restait bloquée en `ESCALATED` |
+
+> Une révision de spec repasse par la chaîne : porte 1, mise à jour de l'issue par le PM, porte 2, puis développement.
