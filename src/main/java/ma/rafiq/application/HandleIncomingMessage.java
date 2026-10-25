@@ -4,7 +4,6 @@ import ma.rafiq.domain.Intent;
 import ma.rafiq.domain.Conversation;
 import ma.rafiq.domain.LlmResult;
 import ma.rafiq.domain.InvalidConversationTransitionException;
-import ma.rafiq.domain.ConversationState;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,15 +50,10 @@ public class HandleIncomingMessage {
         messageSender.send(recipient, reply);
     }
 
-    ConversationState conversationState(String recipient) {
-        return conversations.get(recipient) == null ? null : conversations.get(recipient).state();
-    }
-
     private String transition(Conversation conversation, Intent intent) {
         return switch (intent) {
             case BOOK_APPOINTMENT -> {
-                if (conversation.state() == ConversationState.ESCALATED) conversation.resumeBooking();
-                else conversation.proposeSlots();
+                conversation.proposeSlots();
                 yield ResponseTemplates.forIntent(intent);
             }
             case CHOOSE_SLOT -> { conversation.requestConfirmation(); yield ResponseTemplates.forIntent(intent); }

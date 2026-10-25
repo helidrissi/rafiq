@@ -37,18 +37,13 @@ class ConversationTest {
         assertEquals(ConversationState.ESCALATED, conversation.state());
     }
 
-    @Test void resumesBookingFromEscalated() {
+    @Test void transitionsFromEscalatedToSlotsProposed() {
         var conversation = new Conversation("conversation-1");
         conversation.escalate();
 
-        conversation.resumeBooking();
+        conversation.proposeSlots();
 
         assertEquals(ConversationState.SLOTS_PROPOSED, conversation.state());
-    }
-
-    @Test void rejectsResumingBookingBeforeEscalation() {
-        var conversation = new Conversation("conversation-1");
-        assertThrows(InvalidConversationTransitionException.class, conversation::resumeBooking);
     }
 
     @Test void rejectsBookingDirectlyFromEscalated() {

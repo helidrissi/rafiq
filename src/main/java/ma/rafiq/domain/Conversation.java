@@ -19,13 +19,6 @@ public final class Conversation {
     }
 
     public void proposeSlots() { transitionTo(ConversationState.SLOTS_PROPOSED); }
-
-    public void resumeBooking() {
-        if (state != ConversationState.ESCALATED) {
-            throw new InvalidConversationTransitionException(state, ConversationState.SLOTS_PROPOSED);
-        }
-        transitionTo(ConversationState.SLOTS_PROPOSED);
-    }
     public void requestConfirmation() { transitionTo(ConversationState.AWAITING_CONFIRMATION); }
     public void book() { transitionTo(ConversationState.BOOKED); }
 

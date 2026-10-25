@@ -17,8 +17,6 @@ class HandleIncomingMessageTest {
 
         assertEquals(ResponseTemplates.MESSAGE_SANS_TEXTE, sent[0]);
         assertEquals(0, client.callCount());
-        assertEquals(ma.rafiq.domain.ConversationState.ESCALATED,
-                handler.conversationState("patient-blank"));
     }
 
     @Test void escalatesMedicalQuestions() {
@@ -42,8 +40,6 @@ class HandleIncomingMessageTest {
         assertEquals(List.of(
                 ResponseTemplates.ESCALATION,
                 "Je vais vous proposer trois créneaux disponibles."), replies);
-        assertEquals(ma.rafiq.domain.ConversationState.SLOTS_PROPOSED,
-                handler.conversationState("patient-medical"));
     }
 
     @Test void escalatesByKeywordBeforeCallingLlm() {
@@ -105,7 +101,5 @@ class HandleIncomingMessageTest {
                 "Je vais vous proposer trois créneaux disponibles.",
                 "Merci. Souhaitez-vous confirmer ce créneau ?",
                 "Votre rendez-vous est confirmé."), replies);
-        assertEquals(ma.rafiq.domain.ConversationState.BOOKED,
-                handler.conversationState("patient-vocal"));
     }
 }
