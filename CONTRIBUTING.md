@@ -8,12 +8,17 @@ La chaîne complète, des specs au merge, est décrite dans [la Software Factory
 2. **Une branche par issue**, depuis `develop` : `feat/9-escalade-hors-heures`, `fix/…`, `chore/…`.
 3. **Une PR par issue**, partie de `develop` et non d'une autre PR, vers `develop`, avec `Closes #N` dans la description et la checklist ADR remplie.
 4. **Review obligatoire** avant merge, contre les ADR. Personne ne merge sa propre PR sans relecture.
-5. `main` ne reçoit que des versions stables, depuis `develop`.
+5. **Merge en « Squash and merge » uniquement** : un commit propre par issue dans `develop`.
+6. `main` ne reçoit que des versions stables, depuis `develop`.
 
 ## Commits
 
 [Conventional Commits](https://www.conventionalcommits.org) : `feat:`, `fix:`, `test:`, `chore:`, `docs:`, `refactor:`.
-Un commit = une étape qui compile, `mvn verify` vert.
+Un commit = une étape qui compile, `mvn verify` vert. Jamais de code dans un commit de merge.
+
+## Tests
+
+Les classes de test se terminent par `Test` : Maven (Surefire) n'exécute pas les classes `*IT` tant que Failsafe n'est pas configuré.
 
 ## Organisation du backlog
 
