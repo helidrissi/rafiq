@@ -32,7 +32,7 @@ public class TwilioWebhookController {
             return ResponseEntity.ok(twiml());
         }
         log.info("Received Twilio message {} from {}", messageSid, maskPhone(from));
-        handler.echo(from, body);
+        handler.handle(from, body);
         return ResponseEntity.ok(twiml());
     }
 

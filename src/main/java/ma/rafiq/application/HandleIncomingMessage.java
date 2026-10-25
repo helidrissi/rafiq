@@ -20,10 +20,6 @@ public class HandleIncomingMessage {
         this.medicalKeywordDetector = medicalKeywordDetector;
     }
 
-    public void echo(String recipient, String message) {
-        messageSender.send(recipient, message);
-    }
-
     public void handle(String recipient, String message) {
         if (medicalKeywordDetector.matches(message)) {
             messageSender.send(recipient, ResponseTemplates.ESCALATION);
