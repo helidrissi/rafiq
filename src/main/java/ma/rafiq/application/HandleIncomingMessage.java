@@ -27,16 +27,23 @@ public class HandleIncomingMessage {
     }
 
     public void handle(String recipient, String message) {
+        var conversation = conversations.computeIfAbsent(recipient, Conversation::new);
+        if (message == null || message.isBlank()) {
+            conversation.escalate();
+            messageSender.send(recipient, ResponseTemplates.MESSAGE_SANS_TEXTE);
+            return;
+        }
         if (medicalKeywordDetector.matches(message)) {
+            conversation.escalate();
             messageSender.send(recipient, ResponseTemplates.ESCALATION);
             return;
         }
         LlmResult result = llmClient.classify(message);
         String reply;
         if (result.confidence() < ESCALATION_THRESHOLD || result.intent() == Intent.MEDICAL_QUESTION) {
+            conversation.escalate();
             reply = ResponseTemplates.ESCALATION;
         } else {
-            var conversation = conversations.computeIfAbsent(recipient, Conversation::new);
             try { reply = transition(conversation, result.intent()); }
             catch (InvalidConversationTransitionException invalid) { reply = ResponseTemplates.forIntent(Intent.OTHER); }
         }
@@ -45,7 +52,10 @@ public class HandleIncomingMessage {
 
     private String transition(Conversation conversation, Intent intent) {
         return switch (intent) {
-            case BOOK_APPOINTMENT -> { conversation.proposeSlots(); yield ResponseTemplates.forIntent(intent); }
+            case BOOK_APPOINTMENT -> {
+                conversation.proposeSlots();
+                yield ResponseTemplates.forIntent(intent);
+            }
             case CHOOSE_SLOT -> { conversation.requestConfirmation(); yield ResponseTemplates.forIntent(intent); }
             case CONFIRM -> { conversation.book(); yield ResponseTemplates.forIntent(intent); }
             case DENY, OTHER -> ResponseTemplates.forIntent(intent);

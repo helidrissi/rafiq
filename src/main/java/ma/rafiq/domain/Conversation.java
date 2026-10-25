@@ -33,6 +33,7 @@ public final class Conversation {
 
     private static boolean isAllowed(ConversationState from, ConversationState to) {
         return (from == ConversationState.IDLE && to == ConversationState.SLOTS_PROPOSED)
+                || (from == ConversationState.ESCALATED && to == ConversationState.SLOTS_PROPOSED)
                 || (from == ConversationState.SLOTS_PROPOSED && to == ConversationState.AWAITING_CONFIRMATION)
                 || (from == ConversationState.AWAITING_CONFIRMATION && to == ConversationState.BOOKED);
     }

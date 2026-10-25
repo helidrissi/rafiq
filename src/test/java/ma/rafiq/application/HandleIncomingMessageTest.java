@@ -7,6 +7,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HandleIncomingMessageTest {
+    @Test void escalatesBlankMessageWithoutCallingLlm() {
+        var client = new ma.rafiq.testing.FakeLlmClient(
+                new LlmResult(Intent.OTHER, 0.99, List.of(), "ignored"));
+        var sent = new String[1];
+        var handler = new HandleIncomingMessage(client, (recipient, message) -> sent[0] = message);
+
+        handler.handle("patient-blank", "   ");
+
+        assertEquals(ResponseTemplates.MESSAGE_SANS_TEXTE, sent[0]);
+        assertEquals(0, client.callCount());
+    }
+
     @Test void escalatesMedicalQuestions() {
         var sent = new String[1];
         var handler = new HandleIncomingMessage(
@@ -14,6 +26,20 @@ class HandleIncomingMessageTest {
                 (recipient, message) -> sent[0] = message);
         handler.handle("masked-recipient", "j'ai mal");
         assertEquals("Je transmets votre demande à la secrétaire.", sent[0]);
+    }
+
+    @Test void resumesBookingAfterMedicalEscalation() {
+        var replies = new java.util.ArrayList<String>();
+        var handler = new HandleIncomingMessage(
+                ignored -> new LlmResult(Intent.BOOK_APPOINTMENT, 0.99, List.of(), "ignored"),
+                (recipient, message) -> replies.add(message));
+
+        handler.handle("patient-medical", "s5ana");
+        handler.handle("patient-medical", "bghit rdv ghda");
+
+        assertEquals(List.of(
+                ResponseTemplates.ESCALATION,
+                "Je vais vous proposer trois créneaux disponibles."), replies);
     }
 
     @Test void escalatesByKeywordBeforeCallingLlm() {
@@ -49,6 +75,29 @@ class HandleIncomingMessageTest {
         handler.handle("patient-1", "oui");
 
         assertEquals(List.of(
+                "Je vais vous proposer trois créneaux disponibles.",
+                "Merci. Souhaitez-vous confirmer ce créneau ?",
+                "Votre rendez-vous est confirmé."), replies);
+    }
+
+    @Test void completesBookingAfterNoTextEscalation() {
+        var results = new java.util.ArrayDeque<>(List.of(
+                new LlmResult(Intent.BOOK_APPOINTMENT, 0.99, List.of(), "ignored"),
+                new LlmResult(Intent.CHOOSE_SLOT, 0.99, List.of("1"), "ignored"),
+                new LlmResult(Intent.CONFIRM, 0.99, List.of(), "ignored")));
+        var client = new ma.rafiq.application.LlmClient() {
+            @Override public LlmResult classify(String message) { return results.remove(); }
+        };
+        var replies = new java.util.ArrayList<String>();
+        var handler = new HandleIncomingMessage(client, (recipient, message) -> replies.add(message));
+
+        handler.handle("patient-vocal", null);
+        handler.handle("patient-vocal", "bghit rdv ghda");
+        handler.handle("patient-vocal", "1");
+        handler.handle("patient-vocal", "oui");
+
+        assertEquals(List.of(
+                ResponseTemplates.MESSAGE_SANS_TEXTE,
                 "Je vais vous proposer trois créneaux disponibles.",
                 "Merci. Souhaitez-vous confirmer ce créneau ?",
                 "Votre rendez-vous est confirmé."), replies);

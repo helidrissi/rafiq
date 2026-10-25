@@ -26,7 +26,7 @@ public class TwilioWebhookController {
     public ResponseEntity<String> receive(
             @RequestParam(name = "MessageSid") String messageSid,
             @RequestParam(name = "From") String from,
-            @RequestParam(name = "Body") String body) {
+            @RequestParam(name = "Body", required = false, defaultValue = "") String body) {
         if (!processedMessageSids.add(messageSid)) {
             log.info("Ignoring duplicate Twilio message {} from {}", messageSid, maskPhone(from));
             return ResponseEntity.ok(twiml());
