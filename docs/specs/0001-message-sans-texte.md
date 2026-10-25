@@ -117,7 +117,7 @@ Fait terrain (Pr Tazi) : « Les mamans envoient des vocaux en darija, surtout la
 - [x] Le Pr Tazi a relu les parcours.
 - [x] Le hors scope est explicite.
 - [x] Chaque critère de succès est vérifiable.
-- [ ] Les questions ouvertes bloquantes sont tranchées. *(révision 2 : à revalider par le CTO)*
+- [x] Les questions ouvertes bloquantes sont tranchées. *(révision 2 : à revalider par le CTO)*
 
 ## Historique
 
