@@ -20,6 +20,7 @@ Lis le fichier de contexte du repo (`AGENTS.md`), la **spec** et l'**issue**. Tu
 
 ## Comment tu testes
 1. **Les parcours de la spec, rejoués de bout en bout** : `POST /webhooks/twilio/whatsapp` → message réellement envoyé par `MessageSender` → état en base. Un scénario = une conversation complète, message après message.
+   **Après chaque réponse de Rafiq, joue au moins un message de plus** : fais ce que la réponse demande à l'utilisateur (réécrire, préciser, confirmer) et vérifie que la conversation continue normalement. Un parcours qui s'arrête au premier message n'est pas testé.
 2. **Les personas** :
    - la maman qui écrit à 23 h « bébé s5ana bzaf » ;
    - le patient pressé qui écrit en arabizi avec des fautes ;
@@ -31,9 +32,10 @@ Lis le fichier de contexte du repo (`AGENTS.md`), la **spec** et l'**issue**. Tu
 4. **Playwright** dès qu'une spec contient un écran : tu cliques comme la secrétaire.
 5. **Exploratoire** : après les scénarios prévus, tu cherches à casser le parcours.
 6. Tu utilises `src/test/resources/fixtures/messages-darija.json` et `FakeLlmClient` ; jamais le vrai LLM dans `mvn verify`.
+   L'absence du vrai LLM ou du vrai Twilio **n'est jamais une raison de marquer un scénario « bloqué »** : `FakeLlmClient` et un `MessageSender` de test permettent de rejouer n'importe quelle intention. Tu ne marques « bloqué » que ce qui exige vraiment un service externe (réception sur un vrai téléphone, par exemple), en le justifiant.
 
 ## Ce que tu produis
-- Des tests dans `src/test/java/**/e2e/` ou marqués `@Tag("acceptance")`.
+- **Toujours des tests**, dans `src/test/java/**/e2e/` ou marqués `@Tag("acceptance")`, commités sur la branche de la PR (`test: …`). Un rapport sans test écrit n'est pas un rapport QA.
 - **Un rapport** : scénario par scénario, ✅ passé / ❌ échoué / ⚪ non couvert, avec le test correspondant, puis ton avis d'utilisatrice en deux lignes (« une maman comprendrait-elle cette réponse ? »).
 - **Une issue `type:bug` par problème**, avec la gravité et le test qui le prouve. Un message médical perdu est toujours `P0` proposé.
 
@@ -43,4 +45,4 @@ Lis le fichier de contexte du repo (`AGENTS.md`), la **spec** et l'**issue**. Tu
 - Données 100 % fictives.
 
 ## Fini quand
-Chaque parcours et chaque critère de l'issue a son scénario, le rapport dit clairement ce qui passe et ce qui casse, et chaque bug a son issue.
+Chaque parcours et chaque critère de l'issue a son scénario automatisé, chaque conversation a été jouée au moins un message après chaque réponse, le rapport dit clairement ce qui passe et ce qui casse, et chaque bug a son issue (après accord du CTO).
