@@ -29,7 +29,7 @@ Les contrats détaillés de chaque agent sont dans [`.claude/agents/`](../../.cl
 
 | Porte | Moment | Le CTO vérifie | Si non |
 |---|---|---|---|
-| **1 · Spec prête** | Avant le PM | Les parcours sont écrits du point de vue des utilisateurs ; le hors scope est explicite ; chaque critère de succès est vérifiable ; le Pr Tazi a relu les parcours | La spec retourne en rédaction |
+| **1 · Spec prête** | Avant le PM | Les parcours sont écrits du point de vue des utilisateurs ; le hors scope est explicite ; chaque critère de succès est vérifiable ; le Pr Tazi a relu les parcours. **Le merge de la PR de spec vaut validation**, à condition que la PR contienne déjà le statut « Validée » et la checklist cochée | La spec retourne en rédaction |
 | **2 · Issues prêtes** | Avant le Fullstack | Chaque issue a des critères testables, un périmètre, un milestone ; le CTO fixe les priorités `P0`–`P3` | Le PM corrige ses brouillons |
 | **3 · Merge** | Après Yassine | Verdict ✅ de Yassine, rapport QA sans échec bloquant, `mvn verify` vert | La PR retourne au Fullstack |
 
@@ -51,6 +51,19 @@ Le QA ne vérifie pas que le code fait ce que le développeur a écrit. Il véri
 4. **Le test qui prouve un bug s'écrit avant le correctif.**
 5. **Données 100 % fictives**, aucun secret dans le repo, aucune donnée patient en clair dans les logs.
 6. **Les agents ne mergent jamais et ne priorisent jamais.**
+7. **Un rapport produit par un agent de remplacement ne compte pas.** Si l'agent demandé n'est pas chargé, Codex s'arrête et le dit ; il n'improvise pas avec un agent générique.
+8. **Ce qui est décidé à une porte est appliqué à la lettre.** Après la porte 2, on vérifie que l'issue créée porte bien les labels, la priorité et le milestone validés.
+
+## Changer une spec en cours de route
+
+La spec est la source de vérité : les issues en découlent, le code découle des issues. Une spec modifiée repasse donc par toute la chaîne, sans raccourci :
+
+```
+Spec révisée ─► Porte 1 (merge) ─► PM met à jour l'issue ─► Porte 2 ─► Fullstack ─► QA ─► Yassine ─► Porte 3
+```
+
+- On modifie **le même fichier** de spec, on incrémente sa révision et on complète sa section **Historique** (date, changement, origine).
+- Si la PR de code n'est pas encore mergée et que le changement est dans le périmètre de l'issue, le PM **met à jour l'issue existante** au lieu d'en créer une nouvelle, et le Fullstack corrige dans la même PR.
 
 ## Les métriques
 
@@ -65,6 +78,7 @@ Relevées à chaque passage, dans la description de la PR ou le rapport de fin d
 
 ## Comment lancer un passage
 
+0. **Étape zéro** : `git pull` sur `develop`, puis demander à Codex « Liste les agents personnalisés chargés, sans en lancer ». Les quatre agents (`pm`, `fullstack`, `qa`, `reviewer`) doivent apparaître. Sinon, on corrige avant d'aller plus loin.
 1. Rédiger la spec à partir de [`docs/specs/TEMPLATE.md`](../specs/TEMPLATE.md), la relire avec le Pr Tazi, la valider (porte 1).
 2. Codex : « Lance l'agent pm sur `docs/specs/NNNN-titre.md` et montre-moi les brouillons d'issues. » Valider et prioriser (porte 2).
 3. Pour chaque issue, dans l'ordre des priorités :
