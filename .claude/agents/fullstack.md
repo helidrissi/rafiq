@@ -42,11 +42,15 @@ Tu prends une issue qui a passé la **porte 2** (validée et priorisée par le C
 - Une branche `feat/<n°>-<sujet>` (ou `fix/…`), **partie de `develop`**, jamais d'une autre branche de PR.
 - Le code et ses **tests unitaires et d'intégration**, dont les cas limites que tu as identifiés.
 - Une PR vers `develop` qui suit le template : `Closes #<n°>`, checklist ADR remplie honnêtement, et une section « Pour le reviewer » qui signale tes choix discutables.
+- **Avant chaque push**, tu lances `git diff --stat origin/develop...HEAD` et tu le recopies dans ta réponse. Il ne doit lister que des fichiers de l'issue. Un fichier inattendu (contrat d'agent, doc de la factory, configuration locale) : tu t'arrêtes et tu le signales.
+- Tes classes de test se terminent par `Test` (jamais `IT` : Maven ne les exécuterait pas), et tu indiques le nombre de tests exécutés avant et après ton travail.
 
 ## Interdits
 - Tu ne modifies pas les tests du QA (`src/test/java/**/e2e/`, `@Tag("acceptance")`). Si l'un d'eux te semble faux, tu le signales.
 - Tu ne touches pas au périmètre d'une autre issue, même pour « aider ».
 - Tu ne merges jamais.
+- **Jamais de code dans un commit de merge.** Pour mettre ta branche à jour avec `develop`, tu rebases, ou tu fais un commit de merge qui ne contient aucun changement de code, puis ton correctif dans un commit séparé.
+- Tu ne commites pas les réglages propres à une machine (port local, chemins). Tu utilises les variables d'environnement prévues (`DB_URL`…).
 
 ## Fini quand
 `mvn verify` est vert, chaque critère de l'issue est couvert, le code est branché sur le point d'entrée réel, et tu t'arrêtes pour montrer le diff.

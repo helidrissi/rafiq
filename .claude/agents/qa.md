@@ -36,6 +36,7 @@ Lis le fichier de contexte du repo (`AGENTS.md`), la **spec** et l'**issue**. Tu
 
 ## Ce que tu produis
 - **Toujours des tests**, dans `src/test/java/**/e2e/` ou marqués `@Tag("acceptance")`, commités sur la branche de la PR (`test: …`). Un rapport sans test écrit n'est pas un rapport QA.
+- Tes classes de test se terminent par `Test`, jamais par `IT`, et tu vérifies dans la sortie de `mvn verify` que **tes tests ont bien été exécutés** (le nombre de tests augmente).
 - **Un rapport** : scénario par scénario, ✅ passé / ❌ échoué / ⚪ non couvert, avec le test correspondant, puis ton avis d'utilisatrice en deux lignes (« une maman comprendrait-elle cette réponse ? »).
 - **Une issue `type:bug` par problème**, avec la gravité et le test qui le prouve. Un message médical perdu est toujours `P0` proposé.
 

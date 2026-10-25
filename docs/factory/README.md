@@ -31,7 +31,7 @@ Les contrats détaillés de chaque agent sont dans [`.claude/agents/`](../../.cl
 |---|---|---|---|
 | **1 · Spec prête** | Avant le PM | Les parcours sont écrits du point de vue des utilisateurs ; le hors scope est explicite ; chaque critère de succès est vérifiable ; le Pr Tazi a relu les parcours. **Le merge de la PR de spec vaut validation**, à condition que la PR contienne déjà le statut « Validée » et la checklist cochée | La spec retourne en rédaction |
 | **2 · Issues prêtes** | Avant le Fullstack | Chaque issue a des critères testables, un périmètre, un milestone ; le CTO fixe les priorités `P0`–`P3` | Le PM corrige ses brouillons |
-| **3 · Merge** | Après Yassine | Verdict ✅ de Yassine, rapport QA sans échec bloquant, `mvn verify` vert | La PR retourne au Fullstack |
+| **3 · Merge** | Après Yassine | Verdict ✅ de Yassine, rapport QA sans échec bloquant, `mvn verify` vert. Merge **uniquement en « Squash and merge »** : un commit propre par issue dans `develop` | La PR retourne au Fullstack |
 
 ## Le QA « comme un utilisateur »
 
@@ -53,6 +53,8 @@ Le QA ne vérifie pas que le code fait ce que le développeur a écrit. Il véri
 6. **Les agents ne mergent jamais et ne priorisent jamais.**
 7. **Un rapport produit par un agent de remplacement ne compte pas.** Si l'agent demandé n'est pas chargé, Codex s'arrête et le dit ; il n'improvise pas avec un agent générique.
 8. **Ce qui est décidé à une porte est appliqué à la lettre.** Après la porte 2, on vérifie que l'issue créée porte bien les labels, la priorité et le milestone validés.
+9. **Le diff ne contient que l'issue.** Avant chaque push, `git diff --stat origin/develop...HEAD` ne doit lister que des fichiers de l'issue. Pour mettre une branche à jour, on rebase sur `develop`, ou on fait un commit de merge **sans aucun changement de code** ; jamais de correctif glissé dans un commit de merge.
+10. **Un test qui ne tourne pas n'existe pas.** Maven n'exécute dans `mvn verify` que les classes `*Test` (Surefire ; Failsafe n'est pas configuré). Toute classe de test se termine donc par `Test`, jamais par `IT`. Quand on ajoute des tests, on vérifie que le nombre de tests exécutés augmente.
 
 ## Changer une spec en cours de route
 
@@ -85,11 +87,11 @@ Relevées à chaque passage, dans la description de la PR ou le rapport de fin d
    - « Lance l'agent fullstack sur l'issue #N. »
    - « Lance l'agent qa sur l'issue #N et la PR associée. »
    - « Lance l'agent reviewer sur la PR. »
-4. Merger (porte 3), puis relever les métriques.
+4. Merger en **Squash and merge** (porte 3), puis relever les métriques.
 
 Le premier passage porte sur **une seule petite spec**, pour roder l'usine avant de lui confier un milestone entier.
 
 ## Évolutions prévues
 
-- **V1** : CI GitHub Actions qui lance `mvn verify` et les tests QA sur chaque PR ; métriques collectées automatiquement.
+- **V1** : CI GitHub Actions qui lance `mvn verify` et les tests QA sur chaque PR ; protection de `develop` (CI verte obligatoire, squash seulement) ; métriques collectées automatiquement.
 - **V2** : plusieurs Fullstack en parallèle sur des issues indépendantes (worktrees), un agent sécurité et conformité.
