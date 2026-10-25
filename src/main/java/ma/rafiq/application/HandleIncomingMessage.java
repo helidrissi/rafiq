@@ -57,7 +57,11 @@ public class HandleIncomingMessage {
 
     private String transition(Conversation conversation, Intent intent) {
         return switch (intent) {
-            case BOOK_APPOINTMENT -> { conversation.proposeSlots(); yield ResponseTemplates.forIntent(intent); }
+            case BOOK_APPOINTMENT -> {
+                if (conversation.state() == ConversationState.ESCALATED) conversation.resumeBooking();
+                else conversation.proposeSlots();
+                yield ResponseTemplates.forIntent(intent);
+            }
             case CHOOSE_SLOT -> { conversation.requestConfirmation(); yield ResponseTemplates.forIntent(intent); }
             case CONFIRM -> { conversation.book(); yield ResponseTemplates.forIntent(intent); }
             case DENY, OTHER -> ResponseTemplates.forIntent(intent);

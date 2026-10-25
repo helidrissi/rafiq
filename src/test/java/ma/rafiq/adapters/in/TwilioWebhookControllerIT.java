@@ -77,6 +77,31 @@ class TwilioWebhookControllerIT {
     }
 
     @Test
+    void resumesBookingAfterAudioWithoutTextEscalation() throws Exception {
+        var from = "whatsapp:+212600000023";
+
+        mvc.perform(post("/webhooks/twilio/whatsapp")
+                        .param("MessageSid", "SM-AUDIO-THEN-BOOKING")
+                        .param("From", from)
+                        .param("NumMedia", "1")
+                        .param("MediaContentType0", "audio/ogg"))
+                .andExpect(status().isOk());
+
+        org.mockito.Mockito.when(llmClient.classify("bghit rdv ghda"))
+                .thenReturn(new LlmResult(Intent.BOOK_APPOINTMENT, 0.99, java.util.List.of(), "ignored"));
+
+        mvc.perform(post("/webhooks/twilio/whatsapp")
+                        .param("MessageSid", "SM-TEXT-AFTER-AUDIO")
+                        .param("From", from)
+                        .param("Body", "bghit rdv ghda"))
+                .andExpect(status().isOk());
+
+        verify(messageSender).send(from, ma.rafiq.application.ResponseTemplates.MESSAGE_SANS_TEXTE);
+        verify(messageSender).send(from,
+                "Je vais vous proposer trois créneaux disponibles.");
+    }
+
+    @Test
     void receivesImageWithMedicalCaptionAndEscalatesMedicalMessageFirst() throws Exception {
         mvc.perform(post("/webhooks/twilio/whatsapp")
                         .param("MessageSid", "SM-IMAGE-MEDICAL")
@@ -90,5 +115,25 @@ class TwilioWebhookControllerIT {
         verify(messageSender).send("whatsapp:+212612345678",
                 ma.rafiq.application.ResponseTemplates.ESCALATION);
         verify(llmClient, never()).classify(org.mockito.ArgumentMatchers.anyString());
+    }
+
+    @Test
+    void receivesImageWithBookingCaptionAndTreatsCaptionAsNormalText() throws Exception {
+        var from = "whatsapp:+212600000024";
+        org.mockito.Mockito.when(llmClient.classify("bghit rdv ghda"))
+                .thenReturn(new LlmResult(Intent.BOOK_APPOINTMENT, 0.99, java.util.List.of(), "ignored"));
+
+        mvc.perform(post("/webhooks/twilio/whatsapp")
+                        .param("MessageSid", "SM-IMAGE-BOOKING")
+                        .param("From", from)
+                        .param("Body", "bghit rdv ghda")
+                        .param("NumMedia", "1")
+                        .param("MediaContentType0", "image/jpeg")
+                        .param("MediaUrl0", "https://api.twilio.com/secret-media-url"))
+                .andExpect(status().isOk());
+
+        verify(messageSender).send(from,
+                "Je vais vous proposer trois créneaux disponibles.");
+        verify(llmClient).classify("bghit rdv ghda");
     }
 }

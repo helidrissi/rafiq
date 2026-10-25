@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Statut** | En relecture · révision 2 (parcours D), après validation initiale du 25/10/2026 |
+| **Statut** | Validée (révision 2), par le CTO le 25/10/2026 |
 | **Auteurs** | CTO, co-CEO |
 | **Relecture terrain** | Pr Tazi, le 25/10/2026 |
 | **Milestone visé** | An 1 · M2 — Parcours fiable (issue #23) |
@@ -117,13 +117,13 @@ Fait terrain (Pr Tazi) : « Les mamans envoient des vocaux en darija, surtout la
 - [x] Le Pr Tazi a relu les parcours.
 - [x] Le hors scope est explicite.
 - [x] Chaque critère de succès est vérifiable.
-- [x] Les questions ouvertes bloquantes sont tranchées. *(révision 2 : à revalider par le CTO)*
+- [x] Les questions ouvertes bloquantes sont tranchées. *(révision 2 validée par le CTO le 25/10/2026)*
 
 ## Historique
 
 | Révision | Date | Changement | Origine |
 |---|---|---|---|
 | 1 | 25/10/2026 | Version initiale, validée à la porte 1 | CTO, co-CEO, Pr Tazi |
-| 2 | 25/10/2026 | Ajout du parcours D et de deux critères : après une escalade, le patient peut toujours prendre rendez-vous | Défaut trouvé à la relecture de la PR #24 : la conversation restait bloquée en `ESCALATED` |
+| 2 | 25/10/2026 | Ajout du parcours D et de deux critères : après une escalade, le patient peut toujours prendre rendez-vous. Validée par le merge de la PR #26 | Défaut trouvé à la relecture de la PR #24 : la conversation restait bloquée en `ESCALATED` |
 
 > Une révision de spec repasse par la chaîne : porte 1, mise à jour de l'issue par le PM, porte 2, puis développement.
