@@ -4,6 +4,7 @@ import ma.rafiq.domain.Intent;
 import ma.rafiq.domain.Conversation;
 import ma.rafiq.domain.LlmResult;
 import ma.rafiq.domain.InvalidConversationTransitionException;
+import ma.rafiq.domain.ConversationState;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,20 +28,31 @@ public class HandleIncomingMessage {
     }
 
     public void handle(String recipient, String message) {
+        var conversation = conversations.computeIfAbsent(recipient, Conversation::new);
+        if (message == null || message.isBlank()) {
+            conversation.escalate();
+            messageSender.send(recipient, ResponseTemplates.MESSAGE_SANS_TEXTE);
+            return;
+        }
         if (medicalKeywordDetector.matches(message)) {
+            conversation.escalate();
             messageSender.send(recipient, ResponseTemplates.ESCALATION);
             return;
         }
         LlmResult result = llmClient.classify(message);
         String reply;
         if (result.confidence() < ESCALATION_THRESHOLD || result.intent() == Intent.MEDICAL_QUESTION) {
+            conversation.escalate();
             reply = ResponseTemplates.ESCALATION;
         } else {
-            var conversation = conversations.computeIfAbsent(recipient, Conversation::new);
             try { reply = transition(conversation, result.intent()); }
             catch (InvalidConversationTransitionException invalid) { reply = ResponseTemplates.forIntent(Intent.OTHER); }
         }
         messageSender.send(recipient, reply);
+    }
+
+    ConversationState conversationState(String recipient) {
+        return conversations.get(recipient) == null ? null : conversations.get(recipient).state();
     }
 
     private String transition(Conversation conversation, Intent intent) {

@@ -7,6 +7,20 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HandleIncomingMessageTest {
+    @Test void escalatesBlankMessageWithoutCallingLlm() {
+        var client = new ma.rafiq.testing.FakeLlmClient(
+                new LlmResult(Intent.OTHER, 0.99, List.of(), "ignored"));
+        var sent = new String[1];
+        var handler = new HandleIncomingMessage(client, (recipient, message) -> sent[0] = message);
+
+        handler.handle("patient-blank", "   ");
+
+        assertEquals(ResponseTemplates.MESSAGE_SANS_TEXTE, sent[0]);
+        assertEquals(0, client.callCount());
+        assertEquals(ma.rafiq.domain.ConversationState.ESCALATED,
+                handler.conversationState("patient-blank"));
+    }
+
     @Test void escalatesMedicalQuestions() {
         var sent = new String[1];
         var handler = new HandleIncomingMessage(

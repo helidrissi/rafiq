@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,5 +59,36 @@ class TwilioWebhookControllerIT {
         mvc.perform(request).andExpect(status().isOk());
 
         verify(messageSender, times(1)).send("whatsapp:+212612345678", "Pouvez-vous préciser votre demande ?");
+    }
+
+    @Test
+    void receivesAudioWithoutBodyAndSendsValidatedNoTextTemplate() throws Exception {
+        mvc.perform(post("/webhooks/twilio/whatsapp")
+                        .param("MessageSid", "SM-AUDIO-NO-TEXT")
+                        .param("From", "whatsapp:+212612345678")
+                        .param("NumMedia", "1")
+                        .param("MediaContentType0", "audio/ogg")
+                        .param("MediaUrl0", "https://api.twilio.com/secret-media-url"))
+                .andExpect(status().isOk());
+
+        verify(messageSender).send("whatsapp:+212612345678",
+                ma.rafiq.application.ResponseTemplates.MESSAGE_SANS_TEXTE);
+        verify(llmClient, never()).classify(org.mockito.ArgumentMatchers.anyString());
+    }
+
+    @Test
+    void receivesImageWithMedicalCaptionAndEscalatesMedicalMessageFirst() throws Exception {
+        mvc.perform(post("/webhooks/twilio/whatsapp")
+                        .param("MessageSid", "SM-IMAGE-MEDICAL")
+                        .param("From", "whatsapp:+212612345678")
+                        .param("Body", "s5ana")
+                        .param("NumMedia", "1")
+                        .param("MediaContentType0", "image/jpeg")
+                        .param("MediaUrl0", "https://api.twilio.com/secret-media-url"))
+                .andExpect(status().isOk());
+
+        verify(messageSender).send("whatsapp:+212612345678",
+                ma.rafiq.application.ResponseTemplates.ESCALATION);
+        verify(llmClient, never()).classify(org.mockito.ArgumentMatchers.anyString());
     }
 }
