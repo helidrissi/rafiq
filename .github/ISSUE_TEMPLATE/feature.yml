@@ -1,0 +1,41 @@
+name: Fonctionnalité
+description: Une nouvelle capacité produit ou technique
+title: "feat: "
+labels: ["type:feature"]
+body:
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Quel problème du cabinet (médecin, secrétaire, patient) on résout, et pourquoi maintenant.
+    validations:
+      required: true
+  - type: textarea
+    id: a-faire
+    attributes:
+      label: À faire
+      description: Le périmètre. Ce qui est hors scope aussi.
+    validations:
+      required: true
+  - type: textarea
+    id: fini
+    attributes:
+      label: Fini quand
+      description: Critères vérifiables (tests, comportement observable).
+    validations:
+      required: true
+  - type: dropdown
+    id: squad
+    attributes:
+      label: Squad
+      options: [Conversation, Cabinet, Plateforme, Business]
+    validations:
+      required: true
+  - type: checkboxes
+    id: risques
+    attributes:
+      label: Touche à
+      options:
+        - label: Des données patients (loi 09-08)
+        - label: Le parcours d'escalade médicale
+        - label: Un ADR existant (le citer dans le contexte)
